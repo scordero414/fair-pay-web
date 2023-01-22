@@ -1,0 +1,20 @@
+@startuml Robustness
+actor "Waiter" as waiter
+boundary "Create Order page" as CreateOrderPage
+control "Save Order Data" as SaveOrderData
+entity "PUT: Order Data" as PutCompanyProfileData
+control "Get Products" as GetProducts
+entity "Get Products Service" as GetProductsService
+control "Validate Form" as ValidateForm
+control "Display save order backend error" as DisplaySaveOrderDataError #Red
+boundary "Checks page" as ChecksPage
+
+waiter -[plain]-> CreateOrderPage
+CreateOrderPage -right-> GetProducts: Waiter starts typing in products field
+CreateOrderPage -[plain]-> ValidateForm: Click on "Create" button
+GetProducts -right-> GetProductsService
+ValidateForm -right-> SaveOrderData
+SaveOrderData -right-> PutCompanyProfileData 
+SaveOrderData -[plain]-> DisplaySaveOrderDataError
+SaveOrderData -[plain]-> ChecksPage
+@enduml
