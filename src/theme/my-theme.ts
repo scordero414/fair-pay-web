@@ -22,6 +22,9 @@ const theme = createTheme({
     warning: {
       main: '#E0FF4F'
     },
+    background: {
+      default: '#0B3954'
+    },
     error: {
       main: red.A400,
     },
