@@ -1,20 +1,37 @@
-import { Box, Button } from '@mui/material';
-import React, { useState } from 'react';
-import { useIsLoadingModal } from '../../hooks/use-is-loading-modal';
-import { useSnackbar } from '../../hooks/use-snackbar';
+import { Button, Grid } from '@mui/material';
+import { useRouter } from 'next/router';
+import React from 'react';
+import { routesConstants } from '../../constants/routes-constants';
 
 const Checks = () => {
+  const router = useRouter();
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [isShowingAlert, setIsShowingAlert] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [isShowingAlert, setIsShowingAlert] = useState(false);
 
-  useIsLoadingModal(isLoading, 'Loading...');
-  useSnackbar(isShowingAlert,'Testing out the snackbar', 'success');
+  // useIsLoadingModal(isLoading, 'Loading...');
+  // useSnackbar(isShowingAlert, 'Testing out the snackbar', 'success');
   return (
-    <Box width='100%'>
-      <Button color='secondary' onClick={()=> setIsLoading((prev) => !prev)}>Click here to show loading</Button>
-      <Button color='secondary' onClick={()=> setIsShowingAlert((prev) => !prev)}>Click here to show Alert</Button>
-    </Box>
+    <Grid container justifyContent='center' pt={5}>
+      <Grid xs={10} md={4}>
+        <Button
+          fullWidth
+          variant='contained'
+          color='secondary'
+          onClick={() => {
+            router.push(routesConstants.CREATE_ORDER);
+          }}
+        >
+          Create new Order
+        </Button>
+      </Grid>
+      {/* <Button
+        color='secondary'
+        onClick={() => setIsShowingAlert((prev) => !prev)}
+      >
+        Click here to show Alert
+      </Button> */}
+    </Grid>
   );
 };
 export default Checks;

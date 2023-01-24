@@ -10,6 +10,26 @@ export const roboto = Roboto({
 });
 
 const theme = createTheme({
+  components: {
+    MuiOutlinedInput: {
+      styleOverrides: {
+        notchedOutline: {
+          color: '#FEFFFE',
+          borderColor: '#BFD7EA',
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        outlined: {
+          color: '#BFD7EA',
+          '&.Mui-focused:not(.Mui-error)': {
+            color: '#BFD7EA',
+          },
+        },
+      },
+    },
+  },
   palette: {
     primary: {
       main: '#0B3954',
@@ -29,6 +49,10 @@ const theme = createTheme({
     error: {
       main: red.A400,
     },
+    text: {
+      primary: '#FEFFFE'
+    }
+
   },
   typography: {
     fontFamily: roboto.style.fontFamily,
