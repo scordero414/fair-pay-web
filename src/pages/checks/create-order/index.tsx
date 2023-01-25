@@ -20,9 +20,17 @@ const CreateOrder = () => {
 
   const { checks } = useSelector(selectChecksState);
 
-  const { checkId, readonly } = router.query;
+  const { checkId } = router.query;
 
-  const isReadonly = Boolean(checkId);
+  const [readonly, setReadonly] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (router.isReady) {
+      setReadonly(JSON.parse((router.query.readonly as string)));
+    }
+  }, [router.isReady]);
+
+  console.log(readonly);
 
   const [checkUpdatedMessage, setCheckUpdatedMessage] = useState<string>('');
 
@@ -109,14 +117,14 @@ const CreateOrder = () => {
         <Stack spacing={2} pt={2}>
           <TextField
             fullWidth
-            disabled={isReadonly}
             value={tableNumber}
             label='Table'
             color='secondary'
             variant='outlined'
             type='number'
             InputProps={{
-              inputProps: { min: 1 },
+              inputProps: { min: 1},
+              readOnly: readonly
             }}
             onChange={(e) => setTableNumber(+e.target.value)}
           />
@@ -124,7 +132,7 @@ const CreateOrder = () => {
             Customers:
           </Typography>
           <Grid item container justifyContent='space-between' pb={3}>
-            {!readonly ? 
+            {!readonly ? (
               <Grid
                 item
                 xs={12}
@@ -141,18 +149,20 @@ const CreateOrder = () => {
                   cursor: 'pointer',
                 }}
                 onClick={onAddNewOrder}
-              > 
-                <AddIcon sx={{ width: 30, height: 30, color: 'warning.main' }} />
+              >
+                <AddIcon
+                  sx={{ width: 30, height: 30, color: 'warning.main' }}
+                />
                 <Typography
                   sx={{
                     color: 'warning.main',
                     fontWeight: 900,
                   }}
                 >
-                Add
+                  Add
                 </Typography>
               </Grid>
-              : null}
+            ) : null}
             {orders.map((order, index) => {
               return (
                 <NewOrder
