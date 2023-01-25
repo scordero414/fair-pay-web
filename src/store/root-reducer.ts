@@ -4,11 +4,12 @@ import loadingModalReducer from '../slices/loading-modal-slice';
 import checksReducer from '../slices/checks-slice';
 import { slicesNamesConstants } from '../constants/slices-names';
 import { persistReducer } from 'redux-persist';
-import sessionStorage from 'redux-persist/lib/storage/session';
+// import sessionStorage from 'redux-persist/lib/storage/session';
+import localStorage from 'redux-persist/lib/storage';
 
 const checksConfig = {
   key: slicesNamesConstants.checks,
-  storage: sessionStorage,
+  storage: localStorage,
 };
 
 export const rootReducer = combineReducers({

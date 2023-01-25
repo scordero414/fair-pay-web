@@ -13,6 +13,7 @@ import {
 import { useRouter } from 'next/router';
 import { ConfirmationDialog } from '../../../components/dialogs/confirmation-dialog';
 import { useSnackbar } from '../../../hooks/use-snackbar';
+import { routesConstants } from '../../../constants/routes-constants';
 
 const CreateOrder = () => {
   const router = useRouter();
@@ -44,6 +45,7 @@ const CreateOrder = () => {
         (check) => check.id === checkId
       ) as ICheck;
       // setActiveCheck(loadedCheck);
+      setTableNumber(loadedCheck.table);
       setOrders(loadedCheck.orders);
     }
   }, [checkId]);
@@ -188,10 +190,10 @@ const CreateOrder = () => {
         }
         cancelMessage={'Quit anyway'}
         acceptMessage={'Save'}
-        handleCancel={() => router.back()}
+        handleCancel={() => {router.replace(routesConstants.CHECKS);}}
         handleAccept={() => {
           onSaveCheck();
-          router.back();
+          router.replace(routesConstants.CHECKS);
         }}
       />
     </Grid>

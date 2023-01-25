@@ -10,6 +10,7 @@ import {
 import { useState } from 'react';
 import { useTheme } from '@mui/system';
 import { Close, Menu as MenuIcon } from '@mui/icons-material';
+import { routesConstants } from '../../constants/routes-constants';
 
 const StyledLink = styled(Link)(({ theme }) => ({
   underline: 'hover',
@@ -60,8 +61,8 @@ export const Navbar = ({ window }: INavbarProps) => {
       </IconButton>
 
       <Stack spacing={2} alignItems='center'>
-        <StyledLink href={'/checks'}>{'Checks'}</StyledLink>
-        <StyledLink href={'/checks/create-order'}>{'Create order'}</StyledLink>
+        <StyledLink href={routesConstants.CHECKS}>{'Checks'}</StyledLink>
+        <StyledLink href={routesConstants.CREATE_ORDER}>{'Create order'}</StyledLink>
       </Stack>
     </Box>
   );
@@ -81,7 +82,7 @@ export const Navbar = ({ window }: INavbarProps) => {
         }}
       >
         <Link
-          href={'/home'}
+          href={routesConstants.CHECKS}
           underline='none'
           color='secondary'
           variant='h4'
@@ -97,8 +98,8 @@ export const Navbar = ({ window }: INavbarProps) => {
           justifyContent='center'
           sx={{ display: { xs: 'none', md: 'flex' } }}
         >
-          <StyledLink href={'/checks'}>{'Checks'}</StyledLink>
-          <StyledLink href={'/checks/create-order'}>
+          <StyledLink href={routesConstants.CHECKS}>{'Checks'}</StyledLink>
+          <StyledLink href={routesConstants.CREATE_ORDER}>
             {'Create order'}
           </StyledLink>
         </Stack>
