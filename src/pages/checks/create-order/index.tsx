@@ -30,8 +30,6 @@ const CreateOrder = () => {
     }
   }, [router.isReady]);
 
-  console.log(readonly);
-
   const [checkUpdatedMessage, setCheckUpdatedMessage] = useState<string>('');
 
   const [tableNumber, setTableNumber] = useState<number>(1);
