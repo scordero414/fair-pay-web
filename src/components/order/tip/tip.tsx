@@ -10,13 +10,20 @@ import React, { useState } from 'react';
 interface ITipProps {
   tip: number;
   onIncludeTip: (tip: number) => void;
+  readonly?: boolean;
 }
 
-export const Tip = ({ tip, onIncludeTip }: ITipProps) => {
+export const Tip = ({ tip, onIncludeTip, readonly = false }: ITipProps) => {
   const [isWithTip, setIsWithTip] = useState<boolean>(Boolean(tip));
 
   return (
-    <Grid item container justifyContent='space-between' alignItems='center' pt={5}>
+    <Grid
+      item
+      container
+      justifyContent='space-between'
+      alignItems='center'
+      pt={5}
+    >
       <Grid item container xs={10} md={4} alignItems='center'>
         <Grid item xs={5} md={4}>
           <Typography
@@ -30,6 +37,7 @@ export const Tip = ({ tip, onIncludeTip }: ITipProps) => {
         </Grid>
         <Grid item xs={3}>
           <Switch
+            disabled={readonly}
             checked={isWithTip}
             onChange={() => {
               setIsWithTip((prev) => !prev);
@@ -41,6 +49,7 @@ export const Tip = ({ tip, onIncludeTip }: ITipProps) => {
       {isWithTip ? (
         <Grid item xs={2}>
           <TextField
+            disabled={readonly}
             fullWidth
             label='Tip'
             color='primary'

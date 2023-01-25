@@ -6,11 +6,13 @@ import { OrderItem } from './order-item';
 interface IProductListProps {
   orderItems: IOrderItem[];
   setOrderItems: Dispatch<SetStateAction<IOrderItem[]>>;
+  readonly?: boolean;
 }
 
 export const OrderItemList = ({
   orderItems,
   setOrderItems,
+  readonly = false,
 }: IProductListProps) => {
   return (
     <>
@@ -33,6 +35,7 @@ export const OrderItemList = ({
         {orderItems.map((orderItem, index) => {
           return (
             <OrderItem
+              readonly={readonly}
               key={`${orderItem.product.id}-${index}`}
               orderItem={orderItem}
               onChangeSubtotal={(order) => {

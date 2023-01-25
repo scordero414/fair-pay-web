@@ -4,14 +4,18 @@ import { ICheck } from '../../../types/order';
 import image from '../../../img/postit.png';
 import { useRouter } from 'next/router';
 import { routesConstants } from '../../../constants/routes-constants';
+import { useDispatch } from 'react-redux';
+import { addNewCheck } from '../../../slices/checks-slice';
 
 interface ICheckProps {
   check: ICheck;
+  readonly?: boolean
 }
 
-export const Check = ({ check }: ICheckProps) => {
+export const Check = ({ check, readonly = false }: ICheckProps) => {
 
   const router = useRouter();
+  const dispatch = useDispatch();
 
   return (
     <Grid
@@ -26,16 +30,20 @@ export const Check = ({ check }: ICheckProps) => {
         backgroundImage: `url(${image.src})`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'contain',
-        // display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         cursor: 'pointer',
       }}
       onClick={() => {
+        if (readonly){
+          dispatch(addNewCheck({check}));
+        }
+        
         router.push({
           pathname: routesConstants.CREATE_ORDER,
           query: {
             checkId: check.id,
+            readonly
           },
         });
       }}

@@ -3,26 +3,28 @@ import React, { useEffect, useState } from 'react';
 import { IOrderItem } from '../../types/order';
 import { Product } from './product/product';
 
-interface IProductItem {  
+interface IProductItem {
   orderItem: IOrderItem;
   onChangeSubtotal: (orderItem: IOrderItem) => void;
+  readonly?: boolean;
 }
 
-export const OrderItem = ({ orderItem, onChangeSubtotal }: IProductItem) => {
-
+export const OrderItem = ({
+  orderItem,
+  onChangeSubtotal,
+  readonly = false,
+}: IProductItem) => {
   const [subtotal, setSubtotal] = useState<IOrderItem>(orderItem);
 
   useEffect(() => {
     onChangeSubtotal(subtotal);
   }, [subtotal]);
-  
-  
+
   const handleChangeQuantity = (quantity: number) => {
     setSubtotal((prev) => {
       const newSubtotal = quantity * prev.product.price;
-      return { ...prev, quantity, subtotal:  newSubtotal};
+      return { ...prev, quantity, subtotal: newSubtotal };
     });
-   
   };
 
   return (
@@ -32,6 +34,7 @@ export const OrderItem = ({ orderItem, onChangeSubtotal }: IProductItem) => {
       </Grid>
       <Grid item xs={2}>
         <TextField
+          disabled={readonly}
           fullWidth
           label='Quantity'
           color='primary'

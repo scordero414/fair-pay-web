@@ -13,6 +13,11 @@ export const checksSlice = createSlice({
   reducers: {
     addNewCheck: (state, action: PayloadAction<IAddNewCheckPayload>) => {
       const { check } = action.payload;
+      const indexCheck = state.checks.findIndex((checkState) => checkState.id === check.id);
+      if(indexCheck >= 0) {
+        state.checks[indexCheck] = check;
+        return;
+      }
       state.checks.push(check);
     },
     updateCheck: (state, action: PayloadAction<IUpdateCheckPayload>) => {

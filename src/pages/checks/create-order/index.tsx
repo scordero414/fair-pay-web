@@ -20,7 +20,7 @@ const CreateOrder = () => {
 
   const { checks } = useSelector(selectChecksState);
 
-  const { checkId } = router.query;
+  const { checkId, readonly } = router.query;
 
   const isReadonly = Boolean(checkId);
 
@@ -123,34 +123,36 @@ const CreateOrder = () => {
           <Typography variant='subtitle1' color='secondary' textAlign='initial'>
             Customers:
           </Typography>
-          <Grid item container justifyContent='space-between'>
-            <Grid
-              item
-              xs={12}
-              mt={2}
-              sx={{
-                height: 100,
-                border: 2,
-                borderColor: (theme) => theme.palette.warning.main,
-                borderRadius: 2,
-                borderStyle: 'dashed',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                cursor: 'pointer',
-              }}
-              onClick={onAddNewOrder}
-            >
-              <AddIcon sx={{ width: 30, height: 30, color: 'warning.main' }} />
-              <Typography
+          <Grid item container justifyContent='space-between' pb={3}>
+            {!readonly ? 
+              <Grid
+                item
+                xs={12}
+                mt={2}
                 sx={{
-                  color: 'warning.main',
-                  fontWeight: 900,
+                  height: 100,
+                  border: 2,
+                  borderColor: (theme) => theme.palette.warning.main,
+                  borderRadius: 2,
+                  borderStyle: 'dashed',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  cursor: 'pointer',
                 }}
-              >
+                onClick={onAddNewOrder}
+              > 
+                <AddIcon sx={{ width: 30, height: 30, color: 'warning.main' }} />
+                <Typography
+                  sx={{
+                    color: 'warning.main',
+                    fontWeight: 900,
+                  }}
+                >
                 Add
-              </Typography>
-            </Grid>
+                </Typography>
+              </Grid>
+              : null}
             {orders.map((order, index) => {
               return (
                 <NewOrder
@@ -167,21 +169,24 @@ const CreateOrder = () => {
                       return clone;
                     });
                   }}
+                  readonly={readonly as unknown as boolean}
                 />
               );
             })}
           </Grid>
 
-          <Grid item pb={5} pt={3}>
-            <Button
-              fullWidth
-              variant='contained'
-              color='secondary'
-              onClick={onSaveCheck}
-            >
-              {checkId ? 'Update' : 'Save'}
-            </Button>
-          </Grid>
+          {!readonly ? (
+            <Grid item pb={5}>
+              <Button
+                fullWidth
+                variant='contained'
+                color='secondary'
+                onClick={onSaveCheck}
+              >
+                {checkId ? 'Update' : 'Save'}
+              </Button>
+            </Grid>
+          ) : null}
         </Stack>
       </Grid>
       <ConfirmationDialog
@@ -192,7 +197,9 @@ const CreateOrder = () => {
         }
         cancelMessage={'Quit anyway'}
         acceptMessage={'Save'}
-        handleCancel={() => {router.replace(routesConstants.CHECKS);}}
+        handleCancel={() => {
+          router.replace(routesConstants.CHECKS);
+        }}
         handleAccept={() => {
           onSaveCheck();
           router.replace(routesConstants.CHECKS);

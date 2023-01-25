@@ -88,7 +88,7 @@ const Checks = () => {
       <Grid item container justifyContent='space-around'>
         {checksFromBE.length > 0
           ? checksFromBE.map((check) => {
-            return <Check key={check.id} check={check} />;
+            return <Check key={check.id} check={check} readonly={true}/>;
           })
           : null}
       </Grid>
