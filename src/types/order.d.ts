@@ -35,3 +35,5 @@ export interface IChecksState {
 export interface IAddNewCheckPayload {
   check: ICheck
 }
+
+export type IUpdateCheckPayload = IAddNewCheckPayload

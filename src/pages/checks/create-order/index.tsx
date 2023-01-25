@@ -2,14 +2,29 @@ import { Button, Grid, Stack, TextField, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import React, { useEffect, useState } from 'react';
 import { NewOrder } from '../../../components/order/new-order';
-import { IAddNewCheckPayload, IOrder } from '../../../types/order';
+import { IAddNewCheckPayload, ICheck, IOrder } from '../../../types/order';
 import { v4 as uuidv4 } from 'uuid';
-import { useDispatch } from 'react-redux';
-import { addNewCheck } from '../../../slices/checks-slice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  addNewCheck,
+  selectChecksState,
+  updateCheck,
+} from '../../../slices/checks-slice';
 import { useRouter } from 'next/router';
 import { ConfirmationDialog } from '../../../components/dialogs/confirmation-dialog';
+import { useSnackbar } from '../../../hooks/use-snackbar';
 
 const CreateOrder = () => {
+  const router = useRouter();
+
+  const { checks } = useSelector(selectChecksState);
+
+  const { checkId } = router.query;
+
+  const isReadonly = Boolean(checkId);
+
+  const [checkUpdatedMessage, setCheckUpdatedMessage] = useState<string>('');
+
   const [tableNumber, setTableNumber] = useState<number>(1);
 
   const dispatch = useDispatch();
@@ -21,7 +36,17 @@ const CreateOrder = () => {
     setOpenModal(true);
   };
 
-  const router = useRouter();
+  useSnackbar(Boolean(checkUpdatedMessage), checkUpdatedMessage, 'success');
+
+  useEffect(() => {
+    if (checkId) {
+      const loadedCheck = checks.find(
+        (check) => check.id === checkId
+      ) as ICheck;
+      // setActiveCheck(loadedCheck);
+      setOrders(loadedCheck.orders);
+    }
+  }, [checkId]);
 
   useEffect(() => {
     router.beforePopState(({ as }) => {
@@ -35,13 +60,12 @@ const CreateOrder = () => {
     return () => {
       router.beforePopState(() => true);
     };
-  }, [router]); // Add any state variables to dependencies array if needed.
+  }, [router]);
 
   const onSaveCheck = () => {
-    const myuuid = uuidv4();
     const newCheck: IAddNewCheckPayload = {
       check: {
-        id: myuuid,
+        id: '',
         active: true,
         orders,
         table: tableNumber,
@@ -50,7 +74,18 @@ const CreateOrder = () => {
         }, 0),
       },
     };
+
+    if (checkId) {
+      newCheck.check.id = checkId as string;
+      dispatch(updateCheck(newCheck));
+      setCheckUpdatedMessage('Check updated successfully!');
+      return;
+    }
+
+    const myuuid = uuidv4();
+    newCheck.check.id = myuuid;
     dispatch(addNewCheck(newCheck));
+    setCheckUpdatedMessage('Check added successfully!');
   };
 
   const onAddNewOrder = () => {
@@ -70,6 +105,7 @@ const CreateOrder = () => {
         <Stack spacing={2} pt={2}>
           <TextField
             fullWidth
+            disabled={isReadonly}
             value={tableNumber}
             label='Table'
             color='secondary'
@@ -84,24 +120,6 @@ const CreateOrder = () => {
             Customers:
           </Typography>
           <Grid item container justifyContent='space-between'>
-            {orders.map((order, index) => {
-              return (
-                <NewOrder
-                  clientNumber={index + 1}
-                  key={`order-${order.id}`}
-                  onSave={(check) => {
-                    setOrders((prev) => {
-                      const clone = [...prev];
-                      clone[index] = {
-                        ...clone[index],
-                        ...check,
-                      };
-                      return clone;
-                    });
-                  }}
-                />
-              );
-            })}
             <Grid
               item
               xs={12}
@@ -129,6 +147,25 @@ const CreateOrder = () => {
                 Add
               </Typography>
             </Grid>
+            {orders.map((order, index) => {
+              return (
+                <NewOrder
+                  order={order}
+                  clientNumber={index + 1}
+                  key={`order-${order.id}`}
+                  onSave={(check) => {
+                    setOrders((prev) => {
+                      const clone = [...prev];
+                      clone[index] = {
+                        ...clone[index],
+                        ...check,
+                      };
+                      return clone;
+                    });
+                  }}
+                />
+              );
+            })}
           </Grid>
 
           <Grid item pb={5} pt={3}>
@@ -138,7 +175,7 @@ const CreateOrder = () => {
               color='secondary'
               onClick={onSaveCheck}
             >
-              Save
+              {checkId ? 'Update' : 'Save'}
             </Button>
           </Grid>
         </Stack>

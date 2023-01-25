@@ -8,11 +8,12 @@ import {
 import React, { useState } from 'react';
 
 interface ITipProps {
+  tip: number;
   onIncludeTip: (tip: number) => void;
 }
 
-export const Tip = ({ onIncludeTip }: ITipProps) => {
-  const [isWithTip, setIsWithTip] = useState<boolean>(false);
+export const Tip = ({ tip, onIncludeTip }: ITipProps) => {
+  const [isWithTip, setIsWithTip] = useState<boolean>(Boolean(tip));
 
   return (
     <Grid item container justifyContent='space-between' alignItems='center' pt={5}>
@@ -43,6 +44,7 @@ export const Tip = ({ onIncludeTip }: ITipProps) => {
             fullWidth
             label='Tip'
             color='primary'
+            defaultValue={tip}
             variant='standard'
             type='number'
             onChange={(e) => {

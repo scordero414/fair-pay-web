@@ -38,7 +38,19 @@ const Checks = () => {
           Create new Order
         </Button>
       </Grid>
-      <Grid item container justifyContent='space-around' pt={5}>
+      <Grid item xs={10} md={10} mt={5} textAlign='center'>
+        <Typography
+          variant='h4'
+        
+          sx={{
+            color: 'secondary.main',
+            fontWeight: 900
+          }}
+        >
+        Active checks
+        </Typography>
+      </Grid>
+      <Grid item container justifyContent='space-around' >
         {activeChecks.length > 0
           ? activeChecks.map((check) => {
             return (
@@ -48,6 +60,8 @@ const Checks = () => {
                 container
                 xs={10}
                 md={2.9}
+                xl={2}
+                mt={4}
                 sx={{
                   height: 320,
                   backgroundImage: `url(${image.src})`,
@@ -58,6 +72,12 @@ const Checks = () => {
                   alignItems: 'center',
                   cursor: 'pointer',
                 }}
+                onClick={() => {router.push({
+                  pathname: routesConstants.CREATE_ORDER,
+                  query: {
+                    checkId: check.id
+                  }
+                });}}
               >
                 <Grid item xs={10} textAlign='center'>
                   <Typography

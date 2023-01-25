@@ -8,19 +8,20 @@ import {
 import React, { useEffect, useState } from 'react';
 import { IOrder, IOrderItem, IProduct } from '../../types/order';
 import { OrderItemList } from './order-item-list';
-import { Tip } from './tip';
+import { Tip } from './tip/tip';
 
 
 interface INewOrderProps {
+  order: IOrder;
   clientNumber: number;
   onSave: (check: IOrder) => void;
 }
 
-export const NewOrder = ({ clientNumber, onSave }: INewOrderProps) => {
-  const [orderItems, setOrderItems] = useState<IOrderItem[]>([]);
+export const NewOrder = ({order, clientNumber, onSave }: INewOrderProps) => {
+  const [orderItems, setOrderItems] = useState<IOrderItem[]>(order.orderItems || []);
 
   const [total, setTotal] = useState<number>(0);
-  const [tip, setTip] = useState<number>(0);
+  const [tip, setTip] = useState<number>(order.tip || 0);
 
   useEffect(() => {
     setTotal(
@@ -126,7 +127,7 @@ export const NewOrder = ({ clientNumber, onSave }: INewOrderProps) => {
         />
         <OrderItemList orderItems={orderItems} setOrderItems={setOrderItems} />
 
-        <Tip onIncludeTip={onIncludeTip} />
+        <Tip tip={tip} onIncludeTip={onIncludeTip} />
         <Grid item xs={12} textAlign='center'>
           <Typography
             variant='h4'
