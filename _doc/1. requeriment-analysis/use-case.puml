@@ -1,0 +1,13 @@
+@startuml Use case
+left to right direction
+actor "Waiter" as waiter
+rectangle FairPay {
+  usecase "Make orders" as makeOrders
+  usecase "Generate checks" as generateChecks
+  usecase "Include tip" as includeTip
+}
+
+waiter --> makeOrders
+waiter --> generateChecks
+waiter --> includeTip
+@enduml
