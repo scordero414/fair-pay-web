@@ -115,8 +115,6 @@ export const NewOrder = ({
             getOptionLabel={(option) => option.name}
             id='auto-complete'
             autoComplete
-            readOnly={readonly}
-            // includeInputInList
             onChange={(_, value) => {
               value && onSelectProduct(value);
             }}
