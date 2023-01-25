@@ -6,6 +6,7 @@ import { slicesNamesConstants } from '../constants/slices-names';
 import { persistReducer } from 'redux-persist';
 // import sessionStorage from 'redux-persist/lib/storage/session';
 import localStorage from 'redux-persist/lib/storage';
+import { checksApi } from '../slices/checks-api';
 
 const checksConfig = {
   key: slicesNamesConstants.checks,
@@ -15,7 +16,8 @@ const checksConfig = {
 export const rootReducer = combineReducers({
   alertInfo: alertInfoReducer,
   loadingModal: loadingModalReducer,
-  checks: persistReducer(checksConfig, checksReducer)
+  checks: persistReducer(checksConfig, checksReducer),
+  [checksApi.reducerPath]: checksApi.reducer,
 });
 
 

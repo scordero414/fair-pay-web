@@ -5,7 +5,11 @@ import { useSelector } from 'react-redux';
 import { routesConstants } from '../../constants/routes-constants';
 import { selectChecksState } from '../../slices/checks-slice';
 import { ICheck } from '../../types/order';
-import image from '../../img/postit.png';
+
+import { useGetChecksQuery } from '../../slices/checks-api';
+import { useIsLoadingModal } from '../../hooks/use-is-loading-modal';
+import { useSnackbar } from '../../hooks/use-snackbar';
+import { Check } from '../../components/order/check/check';
 
 const Checks = () => {
   const router = useRouter();
@@ -13,12 +17,25 @@ const Checks = () => {
   // const [isLoading, setIsLoading] = useState(false);
   // const [isShowingAlert, setIsShowingAlert] = useState(false);
 
-  // useIsLoadingModal(isLoading, 'Loading...');
-  // useSnackbar(isShowingAlert, 'Testing out the snackbar', 'success');
-
   const { checks } = useSelector(selectChecksState);
 
   const [activeChecks, setActiveChecks] = useState<ICheck[]>([]);
+  const [checksFromBE, setChecksFromBE] = useState<ICheck[]>([]);
+
+  const {
+    data: checksData,
+    isLoading: isLoadingChecksQuery,
+    isSuccess: isSuccessChecksQuery,
+  } = useGetChecksQuery();
+
+  useIsLoadingModal(isLoadingChecksQuery, 'Loading...');
+  useSnackbar(isSuccessChecksQuery, 'Retrieved data successfully!', 'success');
+
+  useEffect(() => {
+    if (isSuccessChecksQuery) {
+      setChecksFromBE(checksData.checks);
+    }
+  }, [checksData]);
 
   useEffect(() => {
     setActiveChecks(checks.filter((check) => check.active));
@@ -41,75 +58,37 @@ const Checks = () => {
       <Grid item xs={10} md={10} mt={5} textAlign='center'>
         <Typography
           variant='h4'
-        
           sx={{
             color: 'secondary.main',
-            fontWeight: 900
+            fontWeight: 900,
           }}
         >
-        Active checks
+          Active checks
         </Typography>
       </Grid>
-      <Grid item container justifyContent='space-around' >
+      <Grid item container justifyContent='space-around'>
         {activeChecks.length > 0
           ? activeChecks.map((check) => {
-            return (
-              <Grid
-                key={check.id}
-                item
-                container
-                xs={10}
-                md={2.9}
-                xl={2}
-                mt={4}
-                sx={{
-                  height: 320,
-                  backgroundImage: `url(${image.src})`,
-                  backgroundRepeat: 'no-repeat',
-                  backgroundSize: 'contain',
-                  // display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  cursor: 'pointer',
-                }}
-                onClick={() => {router.push({
-                  pathname: routesConstants.CREATE_ORDER,
-                  query: {
-                    checkId: check.id
-                  }
-                });}}
-              >
-                <Grid item xs={10} textAlign='center'>
-                  <Typography
-                    variant='subtitle2'
-                    sx={{
-                      color: 'primary.main',
-                    }}
-                  >
-                      Order ID: <br /> {check.id}
-                  </Typography>
-                  <Typography
-                    variant='h4'
-                    sx={{
-                      color: 'primary.main',
-                      fontWeight: 900,
-                    }}
-                  >
-                      Table # {check.table}
-                  </Typography>
-                  <Typography
-                    variant='h4'
-                    mt={5}
-                    sx={{
-                      color: 'primary.main',
-                      fontWeight: 900,
-                    }}
-                  >
-                      Total: $ {check.total}
-                  </Typography>
-                </Grid>
-              </Grid>
-            );
+            return <Check key={check.id} check={check} />;
+          })
+          : null}
+      </Grid>
+
+      <Grid item xs={10} md={10} mt={5} textAlign='center'>
+        <Typography
+          variant='h4'
+          sx={{
+            color: 'secondary.main',
+            fontWeight: 900,
+          }}
+        >
+          Checks made:
+        </Typography>
+      </Grid>
+      <Grid item container justifyContent='space-around'>
+        {checksFromBE.length > 0
+          ? checksFromBE.map((check) => {
+            return <Check key={check.id} check={check} />;
           })
           : null}
       </Grid>

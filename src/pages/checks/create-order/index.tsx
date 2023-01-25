@@ -81,6 +81,7 @@ const CreateOrder = () => {
       newCheck.check.id = checkId as string;
       dispatch(updateCheck(newCheck));
       setCheckUpdatedMessage('Check updated successfully!');
+      router.replace(routesConstants.CHECKS);
       return;
     }
 
@@ -88,6 +89,7 @@ const CreateOrder = () => {
     newCheck.check.id = myuuid;
     dispatch(addNewCheck(newCheck));
     setCheckUpdatedMessage('Check added successfully!');
+    router.replace(routesConstants.CHECKS);
   };
 
   const onAddNewOrder = () => {

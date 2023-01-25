@@ -2,7 +2,7 @@ import {
   Box,
   Drawer,
   IconButton,
-  Link,
+  Typography,
   Stack,
   styled,
   useMediaQuery,
@@ -11,8 +11,9 @@ import { useState } from 'react';
 import { useTheme } from '@mui/system';
 import { Close, Menu as MenuIcon } from '@mui/icons-material';
 import { routesConstants } from '../../constants/routes-constants';
+import Link from 'next/link';
 
-const StyledLink = styled(Link)(({ theme }) => ({
+const StyledLink = styled(Typography)(({ theme }) => ({
   underline: 'hover',
   color: theme.palette.secondary.main,
   fontSize: 20,
@@ -61,8 +62,12 @@ export const Navbar = ({ window }: INavbarProps) => {
       </IconButton>
 
       <Stack spacing={2} alignItems='center'>
-        <StyledLink href={routesConstants.CHECKS}>{'Checks'}</StyledLink>
-        <StyledLink href={routesConstants.CREATE_ORDER}>{'Create order'}</StyledLink>
+        <Link href={routesConstants.CHECKS}>
+          <StyledLink>{'Checks'}</StyledLink>
+        </Link>
+        <Link href={routesConstants.CREATE_ORDER}>
+          <StyledLink>{'Create order'}</StyledLink>
+        </Link>
       </Stack>
     </Box>
   );
@@ -81,15 +86,16 @@ export const Navbar = ({ window }: INavbarProps) => {
           zIndex: 999,
         }}
       >
-        <Link
-          href={routesConstants.CHECKS}
-          underline='none'
-          color='secondary'
-          variant='h4'
-          fontWeight={600}
-          ml={5}
-        >
-          FairPay
+        <Link href={routesConstants.CHECKS}>
+          <Typography
+            sx={{ underline: 'none' }}
+            color='secondary'
+            variant='h4'
+            fontWeight={600}
+            ml={5}
+          >
+            FairPay
+          </Typography>
         </Link>
         <Stack
           direction='row'
@@ -98,10 +104,12 @@ export const Navbar = ({ window }: INavbarProps) => {
           justifyContent='center'
           sx={{ display: { xs: 'none', md: 'flex' } }}
         >
-          <StyledLink href={routesConstants.CHECKS}>{'Checks'}</StyledLink>
-          <StyledLink href={routesConstants.CREATE_ORDER}>
-            {'Create order'}
-          </StyledLink>
+          <Link href={routesConstants.CHECKS}>
+            <StyledLink>{'Checks'}</StyledLink>
+          </Link>
+          <Link href={routesConstants.CREATE_ORDER}>
+            <StyledLink>{'Create order'}</StyledLink>
+          </Link>
         </Stack>
         <IconButton
           onClick={() => {

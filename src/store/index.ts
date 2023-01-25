@@ -17,6 +17,7 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
+import { checksApi } from '../slices/checks-api';
 
 export const store = configureStore({
   reducer: rootReducer,
@@ -25,8 +26,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    })
-  // .concat(checksApi.middleware)
+    }).concat(checksApi.middleware),
 });
 
 export const persistor = persistStore(store);
