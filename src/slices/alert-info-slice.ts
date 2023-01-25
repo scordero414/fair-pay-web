@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'src/store';
+import { slicesNamesConstants } from '../constants/slices-names';
 import { IAlertInfoState, ISetAlertInfoPayload } from '../types/alert-info';
 
 const initialState: IAlertInfoState = {
@@ -9,7 +10,7 @@ const initialState: IAlertInfoState = {
 };
 
 export const alertInfoSlice = createSlice({
-  name: 'alertInfo',
+  name: slicesNamesConstants.alertInfo,
   initialState,
   reducers: {
     setAlertInfo: (state, action: PayloadAction<ISetAlertInfoPayload>) => {

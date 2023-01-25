@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'src/store';
+import { slicesNamesConstants } from '../constants/slices-names';
 import { ILoadingModalState } from '../types/loading-modal';
 
 const initialState: ILoadingModalState = {
@@ -11,7 +12,7 @@ const initialState: ILoadingModalState = {
  * @desc Slice which controls the state of the loading modal data
  */
 export const loadingModalSlice = createSlice({
-  name: 'loadingModal',
+  name: slicesNamesConstants.loadingModal,
   initialState,
   reducers: {
     resetLoadingModal: () => {

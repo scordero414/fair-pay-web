@@ -1,7 +1,11 @@
-import { Button, Grid } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { routesConstants } from '../../constants/routes-constants';
+import { selectChecksState } from '../../slices/checks-slice';
+import { ICheck } from '../../types/order';
+import image from '../../img/postit.png';
 
 const Checks = () => {
   const router = useRouter();
@@ -11,9 +15,18 @@ const Checks = () => {
 
   // useIsLoadingModal(isLoading, 'Loading...');
   // useSnackbar(isShowingAlert, 'Testing out the snackbar', 'success');
+
+  const { checks } = useSelector(selectChecksState);
+
+  const [activeChecks, setActiveChecks] = useState<ICheck[]>([]);
+
+  useEffect(() => {
+    setActiveChecks(checks.filter((check) => check.active));
+  }, []);
+
   return (
     <Grid container justifyContent='center' pt={5}>
-      <Grid xs={10} md={4}>
+      <Grid item xs={10} md={4}>
         <Button
           fullWidth
           variant='contained'
@@ -25,12 +38,61 @@ const Checks = () => {
           Create new Order
         </Button>
       </Grid>
-      {/* <Button
-        color='secondary'
-        onClick={() => setIsShowingAlert((prev) => !prev)}
-      >
-        Click here to show Alert
-      </Button> */}
+      <Grid item container justifyContent='space-around' pt={5}>
+        {activeChecks.length > 0
+          ? activeChecks.map((check) => {
+            return (
+              <Grid
+                key={check.id}
+                item
+                container
+                xs={10}
+                md={2.9}
+                sx={{
+                  height: 320,
+                  backgroundImage: `url(${image.src})`,
+                  backgroundRepeat: 'no-repeat',
+                  backgroundSize: 'contain',
+                  // display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                <Grid item xs={10} textAlign='center'>
+                  <Typography
+                    variant='subtitle2'
+                    sx={{
+                      color: 'primary.main',
+                    }}
+                  >
+                      Order ID: <br /> {check.id}
+                  </Typography>
+                  <Typography
+                    variant='h4'
+                    sx={{
+                      color: 'primary.main',
+                      fontWeight: 900,
+                    }}
+                  >
+                      Table # {check.table}
+                  </Typography>
+                  <Typography
+                    variant='h4'
+                    mt={5}
+                    sx={{
+                      color: 'primary.main',
+                      fontWeight: 900,
+                    }}
+                  >
+                      Total: $ {check.total}
+                  </Typography>
+                </Grid>
+              </Grid>
+            );
+          })
+          : null}
+      </Grid>
     </Grid>
   );
 };

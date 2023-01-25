@@ -5,8 +5,33 @@ export interface IProduct {
   price: number;
 }
 
-export interface OrderItem {
+export interface IOrderItem {
   product: IProduct;
   quantity: number;
   subtotal: number;
+  id: number
+}
+
+export interface IOrder {
+  orderItems: IOrderItem [];
+  total: number;
+  tip: number;
+  id?: string;
+}
+
+export interface ICheck {
+  orders: IOrder [];
+  total: number;
+  table: number;
+  active: boolean;
+  id: string;
+}
+
+
+export interface IChecksState { 
+  checks: ICheck [];
+}
+
+export interface IAddNewCheckPayload {
+  check: ICheck
 }
