@@ -25,7 +25,7 @@ const CreateOrder = () => {
   const [readonly, setReadonly] = useState<boolean>(false);
 
   useEffect(() => {
-    if (router.isReady) {
+    if (router.isReady && router.query.readonly) {
       setReadonly(JSON.parse((router.query.readonly as string)));
     }
   }, [router.isReady]);
